@@ -2,6 +2,7 @@
 
 class Historico
 {
+    //parametrização
     private $id;
     private $precoCompra;
     private $precoVenda;

@@ -26,8 +26,8 @@
 
 <body>
     <?php
-    include_once '../backend/Historico.php';
 
+    include_once '../backend/Historico.php';
     $his = new Historico();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
