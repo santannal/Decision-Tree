@@ -117,7 +117,8 @@
                     </div>
                 </div>
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary shadow mt-5" name="btnsalvar">Calcular Decisão</button>
+                    <button type="submit" class="btn btn-primary shadow mt-5" style="height: 70px"
+                        name="btnsalvar">Calcular Decisão</button>
                 </div>
             </form>
             <div id="resultado" class="mt-4"></div>
