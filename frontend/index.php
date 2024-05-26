@@ -25,10 +25,43 @@
 </header>
 
 <body>
+    <?php
+    include_once '../backend/Historico.php';
+
+    $his = new Historico();
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $precoCompra = filter_input(INPUT_POST, 'precoCompra', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $precoVenda = filter_input(INPUT_POST, 'precoVenda', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $perda = filter_input(INPUT_POST, 'perda', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $vendaChuva = filter_input(INPUT_POST, 'vendaChuva', FILTER_SANITIZE_NUMBER_INT);
+        $vendaSol = filter_input(INPUT_POST, 'vendaSol', FILTER_SANITIZE_NUMBER_INT);
+
+        $dados = array(
+            'precoCompra' => $precoCompra,
+            'precoVenda' => $precoVenda,
+            'perda' => $perda,
+            'vendaChuva' => $vendaChuva,
+            'vendaSol' => $vendaSol
+        );
+
+        $his->setDadosJson(json_encode($dados));
+
+        $salvarFirebase = $his->salvarFirebase();
+        if ($salvarFirebase) {
+            $msg = '<div class="alert alert-success">Dados salvos com sucesso!</div>';
+        } else {
+            $msg = '<div class="alert alert-danger">Falha ao salvar os dados!</div>';
+        }
+    }
+    ?>
+
     <div class="container table mt-5 bg-light shadow-lg">
         <div id="pai">
             <h1 class="text-center">Tabela de Decisões</h1>
-            <form id="decisionForm" class="mt-4" method="post">
+            <?php if (!empty($msg))
+                echo $msg; ?>
+            <form id="decisionForm" class="mt-4" method="post" action="">
                 <div class="form-group">
                     <label for="precoCompra">Preço de Compra (R$):</label>
                     <input type="number" step="0.01" class="form-control" id="precoCompra" name="precoCompra" required>
@@ -54,39 +87,10 @@
             <div id="resultado" class="mt-4"></div>
         </div>
     </div>
-
-    <?php
-    // Inclua o código PHP antes do HTML
-    $id = filter_input(INPUT_GET, 'id');
-    include_once '../backend/Historico.php';
-    $his = new Historico();
-
-    // Verifique se o botão salvar foi pressionado
-    if (filter_input(INPUT_POST, 'btnsalvar')) {
-        // Obtenha os valores do formulário
-        $precoCompra = filter_input(INPUT_POST, 'precoCompra');
-        $precoVenda = filter_input(INPUT_POST, 'precoVenda');
-        $perda = filter_input(INPUT_POST, 'perda');
-        $vendaChuva = filter_input(INPUT_POST, 'vendaChuva');
-        $vendaSol = filter_input(INPUT_POST, 'vendaSol');
-
-        // Crie um array com os dados
-        $dados = array(
-            'precoCompra' => $precoCompra,
-            'precoVenda' => $precoVenda,
-            'perda' => $perda,
-            'vendaChuva' => $vendaChuva,
-            'vendaSol' => $vendaSol
-        );
-
-        // Defina os dados JSON na instância de Historico
-        $his->setDadosJson(json_encode($dados));
-
-        // Salve os dados no Firebase
-        $salvarFirebase = $his->salvarFirebase();
-    }
-    ?>
-
+    <script src="script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
