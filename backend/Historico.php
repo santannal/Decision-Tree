@@ -117,5 +117,15 @@ class Historico
         curl_close($tabela);
         return json_decode($resposta, true);
     }
+
+    function calcularLucro($kg, $precoCompra, $precoVenda, $perda, $vendaChuva, $vendaSol)
+    {
+        // Quantidade disponível após perda
+        $kgDisponivel = $kg * (1 - ($perda / 100));
+        $custo = $kg * $precoCompra;
+        $lucroSol = ($precoVenda * min($kgDisponivel, $vendaChuva)) - $custo;
+        $lucroChuva = ($precoVenda * min($kgDisponivel, $vendaSol)) - $custo;
+
+        return "Dias Chuvosos: R$ " . number_format($lucroChuva, 2, ',', '.') . ", Dias Ensolarados: R$ " . number_format($lucroSol, 2, ',', '.');
+    }
 }
-?>

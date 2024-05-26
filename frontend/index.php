@@ -10,7 +10,7 @@
 </head>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-opacity-0 mt-3">
-        <a class="title-nav ml-2" href="#">FATEC-ITU</a>
+        <p class="title-nav ml-2">FATEC-ITU</p>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -36,20 +36,36 @@
         $perda = filter_input(INPUT_POST, 'perda', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $vendaChuva = filter_input(INPUT_POST, 'vendaChuva', FILTER_SANITIZE_NUMBER_INT);
         $vendaSol = filter_input(INPUT_POST, 'vendaSol', FILTER_SANITIZE_NUMBER_INT);
+        $case1 = filter_input(INPUT_POST, '1caso', FILTER_SANITIZE_NUMBER_INT);
+        $case2 = filter_input(INPUT_POST, '2caso', FILTER_SANITIZE_NUMBER_INT);
+        $case3 = filter_input(INPUT_POST, '3caso', FILTER_SANITIZE_NUMBER_INT);
+        $case4 = filter_input(INPUT_POST, '4caso', FILTER_SANITIZE_NUMBER_INT);
+
+        $calcularLucroCase1 = $his->calcularLucro($case1, $precoCompra, $precoVenda, $perda, $vendaChuva, $vendaSol);
+        $calcularLucroCase2 = $his->calcularLucro($case2, $precoCompra, $precoVenda, $perda, $vendaChuva, $vendaSol);
+        $calcularLucroCase3 = $his->calcularLucro($case3, $precoCompra, $precoVenda, $perda, $vendaChuva, $vendaSol);
+        $calcularLucroCase4 = $his->calcularLucro($case4, $precoCompra, $precoVenda, $perda, $vendaChuva, $vendaSol);
 
         $dados = array(
             'precoCompra' => $precoCompra,
             'precoVenda' => $precoVenda,
             'perda' => $perda,
             'vendaChuva' => $vendaChuva,
-            'vendaSol' => $vendaSol
+            'vendaSol' => $vendaSol,
+            'calculo1case' => $calcularLucroCase1,
+            'calculo2case' => $calcularLucroCase2,
+            'calculo3case' => $calcularLucroCase3,
+            'calculo4case' => $calcularLucroCase4,
         );
 
         $his->setDadosJson(json_encode($dados));
-
         $salvarFirebase = $his->salvarFirebase();
+
         if ($salvarFirebase) {
-            $msg = '<div class="alert alert-success">Dados salvos com sucesso!</div>';
+            $msg = '<div class="alert alert-info" role="alert"> <h2>RESPOSTAS</h2> <br> <p>Decisão 1:' . $calcularLucroCase1 . '</p>' .
+                '<p>Decisão 2:' . $calcularLucroCase2 . '</p>' .
+                '<p>Decisão 3:' . $calcularLucroCase3 . '</p>' .
+                '<p>Decisão 4:' . $calcularLucroCase4 . '</p></div>';
         } else {
             $msg = '<div class="alert alert-danger">Falha ao salvar os dados!</div>';
         }
@@ -82,12 +98,31 @@
                     <label for="vendaSol">Venda em Dias com Ocasiões Especiais:</label>
                     <input type="number" class="form-control" id="vendaSol" name="vendaSol" required>
                 </div>
-                <button type="submit" class="btn btn-primary" name="btnsalvar">Calcular Decisão</button>
+                <div class="testecases d-flex">
+                    <div class="form-group m-2">
+                        <label for="vendaSol">Primeiro teste: </label>
+                        <input type="number" class="form-control" id="1caso" name="1caso" required>
+                    </div>
+                    <div class="form-group m-2">
+                        <label for="vendaSol">Segundo teste: </label>
+                        <input type="number" class="form-control" id="2caso" name="2caso" required>
+                    </div>
+                    <div class="form-group m-2">
+                        <label for="vendaSol">Terceiro teste: </label>
+                        <input type="number" class="form-control" id="3caso" name="3caso" required>
+                    </div>
+                    <div class="form-group m-2">
+                        <label for="vendaSol">Quarto teste: </label>
+                        <input type="number" class="form-control" id="4caso" name="4caso" required>
+                    </div>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary shadow mt-5" name="btnsalvar">Calcular Decisão</button>
+                </div>
             </form>
             <div id="resultado" class="mt-4"></div>
         </div>
     </div>
-    <script src="script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>

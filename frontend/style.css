@@ -1,32 +1,32 @@
 @keyframes color {
     0% {
-        background: #33CCCC;
+        background: #4fd;
     }
 
     20% {
-        background: #33CC36;
+        background: #67e8ff;
     }
 
     40% {
-        background: #B8CC33;
+        background: #fff;
     }
 
     60% {
-        background: #FCCA00;
+        background: #ffff;
     }
 
     80% {
-        background: #33CC36;
+        background: #67e8ff;
     }
 
     100% {
-        background: #33CCCC;
+        background: #4fd;
     }
 }
 
 body {
     background: #33CCCC;
-    animation: color 9s infinite linear;
+    animation: color 10s infinite linear;
     text-align: center;
     padding: 2em;
 }
@@ -54,4 +54,31 @@ body {
     font-size: 40px;
     width: 140%;
     font-weight: 600;
+}
+
+.testecases {
+    justify-content: center;
+}
+
+.btn {
+    width: 90%;
+}
+
+.div-title {
+    font-size: 40px;
+    align-items: center;
+}
+
+.card-group {
+    justify-content: center;
+    width: auto;
+    align-items: center;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    text-align: center;
+    overflow: hidden;
+}
+
+.adicionando-itens {
+    display: flex;
 }
